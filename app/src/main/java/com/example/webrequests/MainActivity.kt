@@ -14,8 +14,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.buttonRequest.setOnClickListener {
-//            val urlConnection : URLConnection
-            Toast.makeText(this,"Hello web!",Toast.LENGTH_LONG).show()
 
         }
         setContentView(binding.root)
