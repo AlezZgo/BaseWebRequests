@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.webkit.WebSettings
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.webrequests.databinding.ActivityMainBinding
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     fun setWebView(url: String) {
         with(binding.webView){
             settings.javaScriptEnabled = true
+            settings.defaultZoom = WebSettings.ZoomDensity.FAR
             loadUrl(url)
         }
 
