@@ -1,6 +1,8 @@
 package com.example.webrequests
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.webrequests.databinding.ActivityMainBinding
@@ -29,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                 try{
                     val inputStream: InputStream = BufferedInputStream(urlConnection.inputStream)
                     val text = inputStream.bufferedReader().readText()
-                    runOnUiThread {
+                    Handler(Looper.getMainLooper()).post {
                         toast(text)
                     }
                 }finally {
