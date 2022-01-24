@@ -1,19 +1,19 @@
 package com.example.webrequests
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.webkit.WebSettings
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.webrequests.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
+import okhttp3.Call
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.json.JSONObject
 import java.io.BufferedInputStream
 import java.io.InputStream
 import java.net.HttpURLConnection
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,21 +26,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    fun setOnclickListener(){
+    fun setOnclickListener() {
         binding.buttonRequest.setOnClickListener {
-            CoroutineScope(Dispatchers.IO + Job()).launch{
-                val url = URL(BASE_URL)
-                val urlConnection = url.openConnection() as HttpURLConnection
-                try{
-                    val inputStream: InputStream = BufferedInputStream(urlConnection.inputStream)
-                    val jsonStr = inputStream.bufferedReader().readText()
-                    val mediaUrl = getMediaUrl(jsonStr)
-                    Handler(Looper.getMainLooper()).post {
-                        setWebView(mediaUrl)
-                    }
-                }finally {
-                    urlConnection.disconnect()
-                }
+            CoroutineScope(Dispatchers.IO + Job()).launch {
+                val client = OkHttpClient()
+
+                val request = Request.Builder()
+                    .url(BASE_URL)
+                    .build()
+
+                val call = client.newCall(request)
+                val response = call.execute()
+
+//                try {
+//
+//                    val mediaUrl = getMediaUrl(jsonStr)
+//                    Handler(Looper.getMainLooper()).post {
+//                        setWebView(mediaUrl)
+//                    }
+//                } finally {
+//                    urlConnection.disconnect()
+//                }
             }
 
         }
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     fun getMediaUrl(jsonStr: String): String = JSONObject(jsonStr).getString(URL)
 
     fun setWebView(url: String) {
-        with(binding.webView){
+        with(binding.webView) {
             settings.javaScriptEnabled = true
             settings.defaultZoom = WebSettings.ZoomDensity.FAR
             loadUrl(url)
