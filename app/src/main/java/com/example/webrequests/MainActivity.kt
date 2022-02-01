@@ -3,6 +3,7 @@ package com.example.webrequests
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.webkit.WebSettings
 import androidx.appcompat.app.AppCompatActivity
 import com.example.webrequests.databinding.ActivityMainBinding
@@ -35,8 +36,9 @@ class MainActivity : AppCompatActivity() {
                     .url(BASE_URL)
                     .build()
 
-                val call = client.newCall(request)
-                val response = call.execute()
+                client.newCall(request).execute().use { response ->
+                    Log.i("logi",response.body!!.string())
+                }
 
 //                try {
 //
